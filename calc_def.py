@@ -10,13 +10,14 @@ rezka=f['rezka']
 def rewrite(f,adress,ls):
     f[adress]=ls
 def get_list(name):
-    result=''
+    laf = ['4+0 ','4+4 ','1+0 ','1+1 ','4+1 ']
+    result='до 5л, 5-10л, 10-50л, 50-100л, 100-250л\n'
     j=0
     i=0
     if name=='Цвет':
-        for i in color:
-            result=result+'['
-            for j in i:
+        for i in range(5):
+            result=result + laf[i] +'['
+            for j in color[i]:
                 result=result+str(j)+', '
             result=result+']\n'
     elif name=='Резка':
