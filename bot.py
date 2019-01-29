@@ -76,18 +76,18 @@ def main():
             elif (text.split()[0] in ['color','rezka','paper']) and user_id_admin.get(user_id,False):
                 if text.split()[0]=='color':
                     try:
-                        calc_def.color[int(text.split()[1])-1][int(text.split()[2])-1] = int(text.split[3])
+                        calc_def.color[int(text.split()[1])-1][int(text.split()[2])-1] = int(text.split()[3])
                         calc_def.rewrite(calc_def.f,'color',calc_def.color)
                         vk.messages.send(user_id=event.user_id,message='Таблица успешно изменена',keyboard=key_admin.get_keyboard())
                     except:
                         vk.messages.send(user_id=event.user_id,message='Ошибка в команде',keyboard=key_admin.get_keyboard())                        
                 elif text.split()[0]=='rezka':
-#                    try:
-                    calc_def.rezka[int(text.split()[1])-1] = int(text.split()[2])
-                    vk.messages.send(user_id=event.user_id,message='Таблица успешно изменена',keyboard=key_admin.get_keyboard())
-                    calc_def.rewrite(calc_def.f,'rezka',calc_def.rezka)
-
-#                        vk.messages.send(user_id=event.user_id,message='Ошибка в команде',keyboard=key_admin.get_keyboard())   
+                    try:
+                        calc_def.rezka[int(text.split()[1])-1] = int(text.split()[2])
+                        vk.messages.send(user_id=event.user_id,message='Таблица успешно изменена',keyboard=key_admin.get_keyboard())
+                        calc_def.rewrite(calc_def.f,'rezka',calc_def.rezka)
+                    except:
+                        vk.messages.send(user_id=event.user_id,message='Ошибка в команде',keyboard=key_admin.get_keyboard())   
                 elif text.split()[0]=='paper':
                     try:
                         calc_def.paper[int(text.split()[1])-1] = int(text.split()[2])
