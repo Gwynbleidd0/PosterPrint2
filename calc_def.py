@@ -35,8 +35,8 @@ def get_list(name):
 def calc_price(rezka_answer,count_lists,color_per,paper_plot,rezka,color,paper):
     price=0
     rezka_answer=int(rezka_answer)
-    count_lists=math.ceil(count_lists/rezka_answer)
-    print(count_lists)
+
+#    print(count_lists)
     t=0
     if (count_lists>5) and (count_lists<10):
         t=1
@@ -48,6 +48,7 @@ def calc_price(rezka_answer,count_lists,color_per,paper_plot,rezka,color,paper):
         t=4
     if (count_lists>=250):
         t=5
+    count_lists=math.ceil(count_lists/rezka_answer)
     #Перевод цвета
     if color_per=='Цветная с одной стороны':
         color_per=1
@@ -114,7 +115,10 @@ def calc_price(rezka_answer,count_lists,color_per,paper_plot,rezka,color,paper):
     elif rezka_answer>=41 and rezka_answer<=70:   
         rezka_answer=10        
     price=price+color[color_per-1][t]*count_lists
+    print(color[color_per-1][t])
     price=price+paper[paper_plot-1]*count_lists
+    print(paper[paper_plot-1])
     price=price+rezka[rezka_answer-1]
+    print(color[color_per-1][t]+paper[paper_plot-1])
     return(str(price))
-print(get_list('Резка'))
+print(calc_price(4,80,'Цветная с двух сторон','200гр',rezka,color,paper))
