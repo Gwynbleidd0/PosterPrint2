@@ -133,7 +133,7 @@ def fast_calc(text):
         mass[i] = mass[i].strip()
     if mass[0] in form:
         ress = calc_price(form[mass[0]],int(mass[3]),colorr[mass[1]],mass[2],rezka,color,paper)
-        return(ress)
+        return(int(ress),mass[3])
     else:
         return('Неверно введены аргументы')
 #print(calc_price(1,5,'Цветная с одной стороны','170гр',rezka,color,paper))
