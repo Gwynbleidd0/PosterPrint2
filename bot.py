@@ -42,6 +42,7 @@ def main():
     key_main = create_list_keyboard(['Посчитать заказ','Информация'])
     key_admin = create_float_keyboard([['Цвет','Бумага'],['Резка'],['Выход']])
     color_number = {'Цветная с одной стороны':'4+0','Цветная с двух сторон':'4+4','Чёрно-белая с одной стороны':'1+0','Чёрно-белая с двух сторон':'1+1','Цветная+Черно-белая':'4+1'}
+    forms = {'А6':8,'А5':4,'А4':2,'A3':1,'визитка':24,'дисконт':21,'календарь':16,'билет':12,'европолоса':6,'А6':8,'А5':4,'А4':2,'А3':1}
     rezka_number = {'А6 105*148':8,'А5 148*210':4,'А4 210*297':2,'А3 297*420':1,'визитка 5*9':24,'дисконт 54*86':21,'карманный календарь 7*10':16,'билет 60*150':12,'европолоса 99*210':6}
     #Данные
     user_id_rezka={}
@@ -66,7 +67,7 @@ def main():
             user_id=event.user_id
             text = event.text
             mess = event.message_id
-            print(text.split()[0])
+#            print(text.split()[0])
             if event.text=='!Admin':
                 user_id_admin[user_id]=True
                 vk.messages.send(user_id=event.user_id,message='Вы вошли в режим администратора',keyboard=key_admin.get_keyboard())      
@@ -157,7 +158,7 @@ def main():
                 vk.messages.send(user_id=event.user_id,message='Выберите конфигурацию цвета.',keyboard=key_color.get_keyboard())  
                 funct(user_id_d,user_id_plotnost,user_id_t2,user_id_t3,user_id,mess,text)
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t3.get(event.user_id,False):
-                vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.Тираж должен быть кратен'+user_id_rezka[user_id])  
+                vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.Тираж должен быть кратен '+rezka_number[user_id_rezka[user_id]])  
                 funct(user_id_d,user_id_color,user_id_t3,user_id_t4,user_id,mess,text)
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t4.get(event.user_id,False):
                 funct(user_id_d,user_id_countlist,user_id_t4,user_id_t5,user_id,mess,text)
@@ -173,10 +174,12 @@ def main():
                     tytx = tytx + 'Итого: ' + str(price) + ' руб'
                     vk.messages.send(user_id=event.user_id,message=tytx,keyboard=key_fin.get_keyboard()) 
                 except: 
-                    vk.messages.send(user_id=event.user_id,message="В ваших данных ошибка. Пожалуйста, повторите попытку",keyboard=key_fin.get_keyboard()) 
-            
-
-
-
+                    vk.messages.send(user_id=event.user_id,message="В ваших данных ошибка. Пожалуйста, повторите попытку",keyboard=key_fin.get_keyboard())
+            elif text.split(',')[0].strip() in forms:
+                try:
+                    vk.messages.send(user_id=event.user_id,message=calc_def.fast_calc(text),keyboard=key_fin.get_keyboard())
+                except:
+                    vk.messages.send(user_id=event.user_id,message='Неверная команда',keyboard=key_fin.get_keyboard())                    
+                
 if __name__ == '__main__':
     main()

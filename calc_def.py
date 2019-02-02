@@ -113,7 +113,8 @@ def calc_price(rezka_answer,count_lists,color_per,paper_plot,rezka,color,paper):
     elif rezka_answer>=31 and rezka_answer<=40:
         rezka_answer=9
     elif rezka_answer>=41 and rezka_answer<=70:   
-        rezka_answer=10        
+        rezka_answer=10
+    print(color_per,t)        
     price=price+color[color_per-1][t]*count_lists
     print(color[color_per-1][t])
     price=price+paper[paper_plot-1]*count_lists
@@ -121,4 +122,19 @@ def calc_price(rezka_answer,count_lists,color_per,paper_plot,rezka,color,paper):
     price=price+rezka[rezka_answer-1]
     print(color[color_per-1][t]+paper[paper_plot-1])
     return(str(price))
-print(calc_price(4,80,'Цветная с двух сторон','200гр',rezka,color,paper))
+
+
+
+def fast_calc(text):
+    form = {'А6 105*148':8,'А5 148*210':4,'А4 210*297':2,'А3 297*420':1,'визитка 5*9':24,'дисконт 54*86':21,'карманный календарь 7*10':16,'билет 60*150':12,'европолоса 99*210':6,'А6':8,'А5':4,'А4':2,'A3':1,'визитка':24,'дисконт':21,'календарь':16,'билет':12,'европолоса':6,'А6':8,'А5':4,'А4':2,'А3':1}
+    colorr = {'4+0':'Цветная с одной стороны','4+4':'Цветная с двух сторон','1+0':'Чёрно-белая с одной стороны','1+1':'Чёрно-белая с двух сторон','4+1':'Цветная+Черно-белая'}
+    mass = text.split(',')
+    for i in range(len(mass)):
+        mass[i] = mass[i].strip()
+    if mass[0] in form:
+        ress = calc_price(form[mass[0]],int(mass[3]),colorr[mass[1]],mass[2],rezka,color,paper)
+        return(ress)
+    else:
+        return('Неверно введены аргументы')
+#print(calc_price(1,5,'Цветная с одной стороны','170гр',rezka,color,paper))
+print(fast_calc('A3  , 4+0     ,170гр,    5'))
