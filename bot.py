@@ -179,6 +179,13 @@ def main():
                 try:
 #                    vk.messages.send(user_id=event.user_id,message=calc_def.fast_calc(text),keyboard=key_fin.get_keyboard())
                     user_id_zakaz[user_id].append(text + 'шт - '+ str(round(calc_def.fast_calc(text)[0]/calc_def.fast_calc(text)[1])) + str(calc_def.fast_calc(text)[0])+' руб')
+                    tytx=''
+                    price=0
+                    for i in range(len(user_id_zakaz[user_id])):
+                        tytx = tytx + str(i+1) + user_id_zakaz[user_id][i] + '\n'
+                        price = price + int(user_id_zakaz[user_id][i].split()[-2])
+                    tytx = tytx + 'Итого: ' + str(price) + ' руб'
+                    vk.messages.send(user_id=event.user_id,message=tytx,keyboard=key_fin.get_keyboard()) 
                 except:
                     vk.messages.send(user_id=event.user_id,message='Неверная команда',keyboard=key_fin.get_keyboard())                    
                 
