@@ -158,7 +158,7 @@ def main():
                 vk.messages.send(user_id=event.user_id,message='Выберите конфигурацию цвета.',keyboard=key_color.get_keyboard())  
                 funct(user_id_d,user_id_plotnost,user_id_t2,user_id_t3,user_id,mess,text)
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t3.get(event.user_id,False):
-                vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.Тираж должен быть кратен '+rezka_number[user_id_rezka[user_id]])  
+                vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.Тираж должен быть кратен '+str(rezka_number[user_id_rezka[user_id]]))  
                 funct(user_id_d,user_id_color,user_id_t3,user_id_t4,user_id,mess,text)
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t4.get(event.user_id,False):
                 funct(user_id_d,user_id_countlist,user_id_t4,user_id_t5,user_id,mess,text)
