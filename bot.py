@@ -185,7 +185,7 @@ def main():
                     vk.messages.send(user_id=event.user_id,message="В ваших данных ошибка. Пожалуйста, повторите попытку",keyboard=key_fin.get_keyboard())
             elif text.split(',')[0].strip() in forms:
                 try:
-                    vk.messages.send(user_id=event.user_id,message=calc_def.fast_calc(text),keyboard=key_fin.get_keyboard())
+#                    vk.messages.send(user_id=event.user_id,message=calc_def.fast_calc(text),keyboard=key_fin.get_keyboard())
                     user_id_zakaz[user_id].append('.' + text + 'шт - '+ str(round(calc_def.fast_calc(text)[0]/calc_def.fast_calc(text)[1])) + 'руб/шт тираж: ' + str(calc_def.fast_calc(text)[0])+' руб')
                     tytx=''
                     price=0
