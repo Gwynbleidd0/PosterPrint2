@@ -70,6 +70,7 @@ def main():
             mess = event.message_id
             if not(user_id_reg.get(user_id,False)):
                 user_id_rezka[event.user_id]=0
+                user_id_reg[user_id]=True
                 user_id_countlist[event.user_id]=0
                 user_id_color[event.user_id]=0
                 user_id_plotnost[event.user_id]=0
