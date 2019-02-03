@@ -52,6 +52,7 @@ def main():
     user_id_plotnost={}
     user_id_price={}
     user_id_zakaz={}
+    user_id_reg={}
     #Флаги
     user_id_d={}
     user_id_admin={}
@@ -67,6 +68,12 @@ def main():
             user_id=event.user_id
             text = event.text
             mess = event.message_id
+            if not(user_id_reg.get(user_id,False)):
+                user_id_rezka[event.user_id]=0
+                user_id_countlist[event.user_id]=0
+                user_id_color[event.user_id]=0
+                user_id_plotnost[event.user_id]=0
+                user_id_zakaz[event.user_id]=[]
 #            print(text.split()[0])
             if event.text=='!Admin':
                 user_id_admin[user_id]=True
