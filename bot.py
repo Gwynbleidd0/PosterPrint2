@@ -175,7 +175,14 @@ def main():
                     vk.messages.send(user_id=event.user_id,message='Неверный вариант',keyboard=key_plotonost.get_keyboard())                      
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t3.get(event.user_id,False):
                 if text in colorol:
-                    vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.Тираж должен быть кратен'+str(rezka_number[user_id_rezka[user_id]]))  
+                    if rezka_number[user_id_rezka[user_id]]!=1 and rezka_number[user_id_rezka[user_id]]!=2:
+                        ls=''
+                        for i in range(1,4):
+                            ls=ls+str(rezka_number[user_id_rezka[user_id]]*i)+', '
+                        ls=ls+str(rezka_number[user_id_rezka[user_id]]*5)+' штук...'
+                        vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.\nТираж должен быть кратен '+str(rezka_number[user_id_rezka[user_id]]+'. '+ls))
+                    else:
+                        vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.')
                     funct(user_id_d,user_id_color,user_id_t3,user_id_t4,user_id,mess,text)
                 else:
                     vk.messages.send(user_id=event.user_id,message='Неверный вариант',keyboard=key_color.get_keyboard())       
@@ -198,13 +205,13 @@ def main():
                 try:
 #                    vk.messages.send(user_id=event.user_id,message=calc_def.fast_calc(text),keyboard=key_fin.get_keyboard())
                     user_id_zakaz[user_id].append('.' + text + 'шт - '+ str(round(calc_def.fast_calc(text)[0]/calc_def.fast_calc(text)[1])) + 'руб/шт тираж: ' + str(calc_def.fast_calc(text)[0])+' руб')
-                    tytx=''
+                    answ1=''
                     price=0
                     for i in range(len(user_id_zakaz[user_id])):
-                        tytx = tytx + str(i+1) + user_id_zakaz[user_id][i] + '\n'
+                        answ1 = answ1 + str(i+1) + user_id_zakaz[user_id][i] + '\n'
                         price = price + int(user_id_zakaz[user_id][i].split()[-2])
-                    tytx = tytx + 'Итого: ' + str(price) + ' руб'
-                    vk.messages.send(user_id=event.user_id,message=tytx,keyboard=key_fin.get_keyboard()) 
+                    answ1 = answ1 + 'Итого: ' + str(price) + ' руб'
+                    vk.messages.send(user_id=event.user_id,message=answ1,keyboard=key_fin.get_keyboard()) 
                 except:
                     vk.messages.send(user_id=event.user_id,message='Неверная команда',keyboard=key_fin.get_keyboard())                    
                 
