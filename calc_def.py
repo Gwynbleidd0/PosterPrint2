@@ -7,6 +7,7 @@ for i in f.keys():
 color=f['color']
 paper=f['paper']
 rezka=f['rezka']
+final_text=f['oforml']
 def rewrite(f,adress,ls):
     f[adress]=ls
 def get_list(name):
