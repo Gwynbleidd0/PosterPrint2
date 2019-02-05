@@ -44,6 +44,8 @@ def main():
     color_number = {'Цветная с одной стороны':'4+0','Цветная с двух сторон':'4+4','Чёрно-белая с одной стороны':'1+0','Чёрно-белая с двух сторон':'1+1','Цветная+Черно-белая':'4+1'}
     forms = {'A6':8,'A5':4,'A4':2,'A3':1,'визитка':24,'дисконт':21,'календарь':16,'билет':12,'европолоса':6,'А6':8,'А5':4,'А4':2,'А3':1}
     rezka_number = {'А6 105*148':8,'А5 148*210':4,'А4 210*297':2,'А3 297*420':1,'визитка 5*9':24,'дисконт 54*86':21,'карманный календарь 7*10':16,'билет 60*150':12,'европолоса 99*210':6}
+    plotnost=['80гр','130гр','150гр','170гр','200гр','250гр','300гр','самоклейка']
+    colorol = ['Цветная с одной стороны','Цветная с двух сторон','Чёрно-белая с одной стороны','Чёрно-белая с двух сторон','Цветная+Черно-белая']
     #Данные
     user_id_rezka={}
     user_id_rezcount={}
@@ -107,7 +109,7 @@ def main():
             elif text in ['Цвет','Бумага','Резка']:
                 mess = calc_def.get_list(text)
                 vk.messages.send(user_id=event.user_id,message=mess,keyboard=key_admin.get_keyboard())   
-            elif event.text=='Начать':
+            elif event.text=='Начать' or event.text=='Новый заказ.':
                 vk.messages.send(user_id=event.user_id,message='Добра вам! Я бот печатной мастерской "Постер Принт". Буду рад помочь вам посчитать цену на печать визиток, листовок, афиш, открыток и прочей подобной печати. ',keyboard=key_main.get_keyboard())
                 user_id_d[event.user_id]=0
                 user_id_t[event.user_id] = False
@@ -149,25 +151,34 @@ def main():
                 user_id_zakaz[event.user_id]=[]
             #Обсчет заказа
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t.get(event.user_id,False):
-                if text=='Другой размер':
-                    vk.messages.send(user_id=event.user_id,message='Напишите какое количество сможет разместиться на лист 300*450')
-                    user_id_t[user_id]=False
-                    user_id_to[user_id]=True 
-                    user_id_d[user_id]=mess                   
+                if text in rezka_number.keys():
+                    if text=='Другой размер':
+                        vk.messages.send(user_id=event.user_id,message='Напишите какое количество сможет разместиться на лист 300*450')
+                        user_id_t[user_id]=False
+                        user_id_to[user_id]=True 
+                        user_id_d[user_id]=mess                   
+                    else:
+                        vk.messages.send(user_id=event.user_id,message='Выберите плотность бумаги.',keyboard=key_plot.get_keyboard())  
+                        funct(user_id_d,user_id_rezka,user_id_t,user_id_t2,user_id,mess,text)
+                        user_id_rezcount[user_id]=rezka_number[text]
                 else:
-                    vk.messages.send(user_id=event.user_id,message='Выберите плотность бумаги.',keyboard=key_plot.get_keyboard())  
-                    funct(user_id_d,user_id_rezka,user_id_t,user_id_t2,user_id,mess,text)
-                    user_id_rezcount[user_id]=rezka_number[text]
+                    vk.messages.send(user_id=event.user_id,message='Неверный вариант',keyboard=key_rezka.get_keyboard())  
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_to.get(event.user_id,False):
                 vk.messages.send(user_id=event.user_id,message='Выберите плотность бумаги.',keyboard=key_plot.get_keyboard())
                 funct(user_id_d,user_id_rezka,user_id_to,user_id_t2,user_id,mess,text)
                 user_id_rezcount[user_id]=text                                            
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t2.get(event.user_id,False):
-                vk.messages.send(user_id=event.user_id,message='Выберите конфигурацию цвета.',keyboard=key_color.get_keyboard())  
-                funct(user_id_d,user_id_plotnost,user_id_t2,user_id_t3,user_id,mess,text)
+                if text in plotnost:
+                    vk.messages.send(user_id=event.user_id,message='Выберите конфигурацию цвета.',keyboard=key_color.get_keyboard())  
+                    funct(user_id_d,user_id_plotnost,user_id_t2,user_id_t3,user_id,mess,text)
+                else:
+                    vk.messages.send(user_id=event.user_id,message='Неверный вариант',keyboard=key_plotonost.get_keyboard())                      
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t3.get(event.user_id,False):
-                vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.Тираж должен быть кратен '+str(rezka_number[user_id_rezka[user_id]]))  
-                funct(user_id_d,user_id_color,user_id_t3,user_id_t4,user_id,mess,text)
+                if text in colorol:
+                    vk.messages.send(user_id=event.user_id,message='Теперь напишите сколько нужно напечатать.Тираж должен быть кратен'+str(rezka_number[user_id_rezka[user_id]]))  
+                    funct(user_id_d,user_id_color,user_id_t3,user_id_t4,user_id,mess,text)
+                else:
+                    vk.messages.send(user_id=event.user_id,message='Неверный вариант',keyboard=key_color.get_keyboard())       
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_t4.get(event.user_id,False):
                 funct(user_id_d,user_id_countlist,user_id_t4,user_id_t5,user_id,mess,text)
                 try:
