@@ -46,7 +46,7 @@ def main():
     key_plot = create_float_keyboard([['80гр','130гр','150гр','170гр'],['200гр','250гр','300гр','самоклейка']],False)
     key_fin = create_float_keyboard([['Добавить к заказу.','Удалить позицию.'],['Новый заказ.','Оформить заказ.']],False)
     key_main = create_list_keyboard(['Посчитать заказ','Информация'],False)
-    key_admin = create_float_keyboard([['Цвет','Бумага'],['Резка'],['Выход']],False)
+    key_admin = create_float_keyboard([['Цвет','Бумага','Резка'],['Start','Final'],['Выход']],False)
     color_number = {'Цветная с одной стороны':'4+0','Цветная с двух сторон':'4+4','Чёрно-белая с одной стороны':'1+0','Чёрно-белая с двух сторон':'1+1','Цветная+Черно-белая':'4+1'}
     forms = {'A6':8,'A5':4,'A4':2,'A3':1,'визитка':24,'дисконт':21,'календарь':16,'билет':12,'европолоса':6,'А6':8,'А5':4,'А4':2,'А3':1}
     rezka_number = {'А6 105*148':8,'А5 148*210':4,'А4 210*297':2,'А3 297*420':1,'визитка 5*9':24,'дисконт 54*86':21,'карманный календарь 7*10':16,'билет 60*150':12,'европолоса 99*210':6}
@@ -72,6 +72,8 @@ def main():
     user_id_t5={}
     user_id_to={}
     user_id_t6={}
+    user_id_tS={}
+    user_id_tF={}
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and (event.text!='' or user_id_t6[user_id]):
             user_id=event.user_id
@@ -113,12 +115,36 @@ def main():
                             vk.messages.send(user_id=event.user_id,message='Таблица успешно изменена',keyboard=key_admin.get_keyboard())
                             calc_def.rewrite(calc_def.f,'paper',calc_def.paper)
                         except:
-                            vk.messages.send(user_id=event.user_id,message='Ошибка в команде',keyboard=key_admin.get_keyboard())   
+                            vk.messages.send(user_id=event.user_id,message='Ошибка в команде',keyboard=key_admin.get_keyboard())
+                elif text.split()[0]=='Start':
+                    user_id_tS[user_id]=True
+                    vk.messages.send(user_id=event.user_id,message='Введите текст приветствия')
+                    user_id_d[event.user_id] = event.message_id
+                elif text.split()[0]=='Final':
+                    user_id_tF[user_id]=True
+                    vk.messages.send(user_id=event.user_id,message='Введите текст оформления')
+                    user_id_d[event.user_id] = event.message_id
+                elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_tF.get(event.user_id,False):
+                    try:
+                        user_id_tF[user_id]=False
+                        calc_def.final_text=text
+                        calc_def.rewrite(calc_def.f,'oforml',calc_def.final_text)
+                        vk.messages.send(user_id=event.user_id,message='Успешно',keyboard=key_admin.get_keyboard())
+                    except:
+                        vk.messages.send(user_id=event.user_id,message='Ошибка в команде',keyboard=key_admin.get_keyboard())                
+                elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_tS.get(event.user_id,False):
+                    try:
+                        user_id_tS[user_id]=False
+                        calc_def.start_text=text
+                        calc_def.rewrite(calc_def.f,'start',calc_def.final_text)
+                        vk.messages.send(user_id=event.user_id,message='Успешно',keyboard=key_admin.get_keyboard())
+                    except:
+                        vk.messages.send(user_id=event.user_id,message='Ошибка в команде',keyboard=key_admin.get_keyboard())                                              
             elif text in ['Цвет','Бумага','Резка']:
                 mess = calc_def.get_list(text)
                 vk.messages.send(user_id=event.user_id,message=mess,keyboard=key_admin.get_keyboard())   
             elif event.text=='Начать':
-                vk.messages.send(user_id=event.user_id,message='Добра вам! Я бот печатной мастерской "Постер Принт". Буду рад помочь вам посчитать цену на печать визиток, листовок, афиш, открыток и прочей подобной печати. ',keyboard=key_main.get_keyboard())
+                vk.messages.send(user_id=event.user_id,message=calc_def.start_text,keyboard=key_main.get_keyboard())
                 user_id_d[event.user_id]=0
                 user_id_t[event.user_id] = False
                 user_id_t2[event.user_id]=False
@@ -143,6 +169,7 @@ def main():
                     priceo = priceo + int(user_id_zakaz[user_id][i].split()[-2])
                 horus = horus + 'Итого: ' + str(priceo) + ' руб'   
                 vk.messages.send(user_id=130685714,message=horus,forward_messages=mess)
+                user_id_t6[user_id]=False
             elif event.text=='Новый заказ.':
                 vk.messages.send(user_id=event.user_id,message='Создан новый заказ',keyboard=key_main.get_keyboard())
                 user_id_d[event.user_id]=0

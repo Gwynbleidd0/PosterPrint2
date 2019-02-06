@@ -8,6 +8,7 @@ color=f['color']
 paper=f['paper']
 rezka=f['rezka']
 final_text=f['oforml']
+start_text=f['start']
 def rewrite(f,adress,ls):
     f[adress]=ls
 def get_list(name):
