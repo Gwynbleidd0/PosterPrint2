@@ -119,10 +119,12 @@ def main():
                 elif text.split()[0]=='Start':
                     user_id_tS[user_id]=True
                     vk.messages.send(user_id=event.user_id,message='Введите текст приветствия')
+                    vk.messages.send(user_id=event.user_id,message='Текущий текст:\n'+calc_def.start_text,keyboard=key_main.get_keyboard())
                     user_id_d[event.user_id] = event.message_id
                 elif text.split()[0]=='Final':
                     user_id_tF[user_id]=True
                     vk.messages.send(user_id=event.user_id,message='Введите текст оформления')
+                    vk.messages.send(user_id=event.user_id,message='Текущий текст:\n'+calc_def.final_text)
                     user_id_d[event.user_id] = event.message_id
                 elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_tF.get(event.user_id,False):
                     try:
@@ -140,9 +142,9 @@ def main():
                         vk.messages.send(user_id=event.user_id,message='Успешно',keyboard=key_admin.get_keyboard())
                     except:
                         vk.messages.send(user_id=event.user_id,message='Ошибка в команде',keyboard=key_admin.get_keyboard())                                              
-            elif text in ['Цвет','Бумага','Резка']:
-                mess = calc_def.get_list(text)
-                vk.messages.send(user_id=event.user_id,message=mess,keyboard=key_admin.get_keyboard())   
+                elif text in ['Цвет','Бумага','Резка']:
+                    mess = calc_def.get_list(text)
+                    vk.messages.send(user_id=event.user_id,message=mess,keyboard=key_admin.get_keyboard())   
             elif event.text=='Начать':
                 vk.messages.send(user_id=event.user_id,message=calc_def.start_text,keyboard=key_main.get_keyboard())
                 user_id_d[event.user_id]=0
@@ -192,7 +194,6 @@ def main():
                 user_id_td[user_id]=True
                 user_id_d[event.user_id] = event.message_id
             elif (event.to_me and event.message_id>user_id_d.get(event.user_id,0))and user_id_td.get(event.user_id,False):
-                user_id_td[user_id]=False
                 try:
                     del user_id_zakaz[user_id][int(text)-1]
                     vk.messages.send(user_id=event.user_id,message='Успешно',keyboard=key_fin.get_keyboard())
@@ -202,7 +203,8 @@ def main():
                         tytx = tytx + str(i+1) + user_id_zakaz[user_id][i] + '\n'
                         price = price + int(user_id_zakaz[user_id][i].split()[-2])
                     tytx = tytx + 'итого' + str(price) + 'руб'   
-                    vk.messages.send(user_id=event.user_id,message=tytx,keyboard=key_fin.get_keyboard()) 
+                    vk.messages.send(user_id=event.user_id,message=tytx,keyboard=key_fin.get_keyboard())
+                    user_id_td[user_id]=False 
                 except:
                     vk.messages.send(user_id=event.user_id,message='Пожалуйста введите верное значение',keyboard=key_fin.get_keyboard())                                              
             elif event.text=='Посчитать заказ':
