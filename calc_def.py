@@ -22,17 +22,19 @@ def get_list(name):
             result=result + laf[i] +'['
             for j in color[i]:
                 result=result+str(j)+', '
-            result=result+']\n'
+            result='Строки - красочность. Столбцы - тираж.\nЧтобы изменить цену за печать одного листа А3 в таблице, нужно использовать команду:\n\ncolor Х Y Z\nХ - номер строки\nY - номер столбца\nZ - новое значение\n\nНапример, команда: color 2 3 40\nвыберет 2 строку, 3 столбец и изменит его на значение 40.\n\n\n'+result+']\n'
     elif name=='Резка':
+        result='90гр, 130гр, 150гр, 170гр, 200гр, 250гр, 300гр, самоклейка\n'
         result=result+'['
         for i in rezka:
             result=result+str(i)+', '
-        result=result+']\n'
+        result='Чтобы изменить стоимость бумаги в таблице, нужно использовать команду: paper Y Z, где\nY - номер столбца\nZ - новое значение\n\nНапример, команда: paper 3 40\nвыберет 3 столбец и изменит его на значение 40.\n\n\n'+result+']\n'
     elif name=='Бумага':
+        result='2 части (А4), 3-4(А5), 5-6, 7-8(А6), 9-10, 11-16(А7), 17-24, 25-30, 31-40, 41-70 \n'
         result=result+'['
         for i in paper:
             result=result+str(i)+', '
-        result=result+']\n'
+        result='Чтобы изменить цену резки в таблице нужно использовать команду: rezka Y Z, где\nY - номер столбца\nZ - новое значение\n\nНапример, команда: rezka 3 40\nвыберет 3 столбец и изменит его на значение 40.\n\n\n'+result+']\n'
     return(result)
 def calc_price(rezka_answer,count_lists,color_per,paper_plot,rezka,color,paper):
     price=0
