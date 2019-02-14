@@ -170,7 +170,7 @@ def main():
                     horus = horus + str(i+1) + user_id_zakaz[user_id][i] + '\n'
                     priceo = priceo + int(user_id_zakaz[user_id][i].split()[-2])
                 horus = horus + 'Итого: ' + str(priceo) + ' руб'   
-                vk.messages.send(user_id=130685714,message=horus,forward_messages=mess)
+                vk.messages.send(chat_id=1,message=horus,forward_messages=mess)
                 user_id_t6[user_id]=False
             elif event.text=='Новый заказ.':
                 vk.messages.send(user_id=event.user_id,message='Создан новый заказ',keyboard=key_main.get_keyboard())
